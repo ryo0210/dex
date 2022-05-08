@@ -10,11 +10,7 @@ contract ERC20 {
     mapping(address => uint256) private balances;
     mapping(address => mapping(address => uint256)) private allowances;
 
-    constructor(
-        string memory _name,
-        string memory _symbol,
-        uint256 _totalSupply
-    ) {
+    constructor(string memory _name, string memory _symbol, uint256 _totalSupply) {
         name = _name;
         symbol = _symbol;
         totalSupply = _totalSupply;
@@ -22,51 +18,29 @@ contract ERC20 {
     }
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
-    event Approval(
-        address indexed _owner,
-        address indexed _spender,
-        uint256 _value
-    );
+    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
     function balanceOf(address _owner) external view returns (uint256) {
         return balances[_owner];
     }
 
-    function allownance(address _owner, address _spender)
-        public
-        view
-        returns (uint256 remaining)
-    {
+    function allownance(address _owner, address _spender) public view returns (uint256 remaining) {
         return allowances[_owner][_spender];
     }
 
-    function transfer(address _to, uint256 _value)
-        external
-        returns (bool success)
-    {
+    function transfer(address _to, uint256 _value) external returns (bool success) {
         _transfer(msg.sender, _to, _value);
         return true;
     }
 
-    function transferFrom(
-        address _from,
-        address _to,
-        uint256 _value
-    ) external returns (bool success) {
-        require(
-            allowances[_from][msg.sender] >= _value,
-            "Transfer amout exceeds allownace."
-        );
+    function transferFrom(address _from, address _to, uint256 _value) external returns (bool success) {
+        require(allowances[_from][msg.sender] >= _value,"Transfer amout exceeds allownace.");
         _transfer(_from, _to, _value);
         allowances[_from][msg.sender] -= _value;
         return true;
     }
 
-    function _transfer(
-        address _from,
-        address _to,
-        uint256 _value
-    ) private returns (bool success) {
+    function _transfer(address _from,address _to,uint256 _value) private returns (bool success) {
         require(_value <= balances[_from], "Insufficient balance");
         require(_from != _to, "from = to");
 
@@ -76,10 +50,7 @@ contract ERC20 {
         return true;
     }
 
-    function approve(address _spender, uint256 _value)
-        public
-        returns (bool success)
-    {
+    function approve(address _spender, uint256 _value) public returns (bool success) {
         // msg.senderのものを_spenderが_value分、動かせることを決める
         allowances[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
