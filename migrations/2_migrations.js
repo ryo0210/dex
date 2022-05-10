@@ -1,16 +1,18 @@
-const ERC20 = artifacts.require("ERC20");
+const Dai = artifacts.require("Dai");
+const Link = artifacts.require("Link");
+const Comp = artifacts.require("Comp");
 const Dex = artifacts.require("Dex");
 
 // 1 eth = 10^18 wei
 const toWei = (number) => web3.utils.toWei(web3.utils.toBN(number), 'ether');
 
 module.exports = async function (deployer) {
-  await deployer.deploy(ERC20, "Dai", "DAI", toWei((10 ** 10)));
-  const dai = await ERC20.deployed();
-  await deployer.deploy(ERC20, "Chainlink", "LINK", toWei((10 ** 6)));
-  const link = await ERC20.deployed();
-  await deployer.deploy(ERC20, "Compound", "COMP", toWei((10 ** 4)));
-  const comp = await ERC20.deployed();
+  await deployer.deploy(Dai, "Dai", "DAI", toWei((10 ** 10)));
+  await deployer.deploy(Link, "Chainlink", "LINK", toWei((10 ** 6)));
+  await deployer.deploy(Comp, "Compound", "COMP", toWei((10 ** 4)));
+  const dai = await Dai.deployed();
+  const link = await Link.deployed();
+  const comp = await Comp.deployed();
 
   await deployer.deploy(Dex, [dai.address, link.address, comp.address]);
   const dex = await Dex.deployed();

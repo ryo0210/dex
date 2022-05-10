@@ -10,15 +10,16 @@ contract ERC20 {
     mapping(address => uint256) private balances;
     mapping(address => mapping(address => uint256)) private allowances;
 
+    event Transfer(address indexed _from, address indexed _to, uint256 _value);
+    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
+
     constructor(string memory _name, string memory _symbol, uint256 _totalSupply) {
         name = _name;
         symbol = _symbol;
         totalSupply = _totalSupply;
         balances[msg.sender] = totalSupply;
+        emit Transfer(address(0), msg.sender, totalSupply);
     }
-
-    event Transfer(address indexed _from, address indexed _to, uint256 _value);
-    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
     function balanceOf(address _owner) external view returns (uint256) {
         return balances[_owner];
