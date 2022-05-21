@@ -31,7 +31,7 @@ header h1 {
   margin: 0 auto;
   margin-top: 150px;
   border-radius: 30px;
-  height: 350px;
+  height: 360px;
   width: 500px;
   background-color: #191b1f;
   position: relative;
@@ -62,7 +62,13 @@ header h1 {
   border-color: #2C2F36;
   color: #fff;
   width: 27%;
+  border-radius: 15px;
   font-size: large;
+}
+
+.btn.btn-outline-secondary.selectToken {
+  border-bottom-right-radius: 15px !important;
+  border-top-right-radius: 15px !important;
 }
 
 #eth-addon img{
