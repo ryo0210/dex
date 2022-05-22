@@ -159,7 +159,16 @@ function buyToken() {
         dexInst.methods
             .buyToken(tokenAddr, finalInput, finalOutput).send({value: finalInput})
             .then((receipt) => {
-                console.log(receipt);
+                const eventData = receipt.events.Buy.returnValues;
+                const tokenAddr = eventData._tokenAddr;
+                const amountDisplay = parseFloat(web3.utils.fromWei(eventData._amount, "ether"));
+                const costDisplay = parseFloat(web3.utils.fromWei(eventData._cost, "ether"));
+                alert(`
+                    Swap successful! \n
+                    Token address: ${tokenAddr} \n
+                    Amount: ${amountDisplay.toFixed(7)} ${token} \n
+                    Cost: ${costDisplay.toFixed(7)} ETH
+                `);
                 resolve();
         })
         .catch((error) => reject(error));
@@ -178,7 +187,16 @@ async function sellToken() {
     try {
         const tokenAddr = tokenInst._address;
         const sellTx = await dexInst.methods.sellToken(tokenAddr, finalInput, finalOutput).send();
-        console.log(sellTx);
+        const eventData = sellTx.events.Sell.returnValues;
+        const _tokenAddr = eventData._tokenAddr;
+        const amountDisplay = parseFloat(web3.utils.fromWei(eventData._amount, "ether"));
+        const costDisplay = parseFloat(web3.utils.fromWei(eventData._cost, "ether"));
+        alert(`
+            Swap successful! \n
+            Token address: ${_tokenAddr} \n
+            Amount: ${amountDisplay.toFixed(7)} ETH \n
+            Cost: ${costDisplay.toFixed(7)} ${token}
+        `);
     } catch (error) {
         throw (error);
     }
